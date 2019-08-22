@@ -34,10 +34,6 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); //返回内容储存到变量中
 curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.96 Safari/537.36"); //设置 UA
 curl_setopt($ch, CURLOPT_HEADER, false);
 
-curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_BASIC); //代理认证模式  
-curl_setopt($ch, CURLOPT_PROXY, "127.0.0.1"); //代理服务器地址   
-curl_setopt($ch, CURLOPT_PROXYPORT, 8888); //代理服务器端口
-
 $data = curl_exec($ch);
 $json = json_decode($data);
 
