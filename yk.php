@@ -1,6 +1,6 @@
-<meta charset="utf-8" />
-
 <?php
+header("Content-Type: application/json; charset=utf-8");
+
 $cookie = get_cookie();
 $url = "http://acs.youku.com/h5/mtop.youku.play.ups.appinfo.get/1.1/?";
 $appkey = "24679788";
