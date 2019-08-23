@@ -6,9 +6,9 @@ window.onload = function(){
 	
 	doneBtn.onclick = function(){
 		ajax({
-			url: "yk.php?vid=" + id.value,
+			url: "video.php?vid=" + id.value,
 			callback: function(data){
-				console.log("得到链接：" + data);
+				console.log("得到 json：" + data);
 				showvideo(data);
 			}
 		});
@@ -31,7 +31,17 @@ function ajax(params){
 	http.send();
 }
 
-function showvideo(url){
+function showvideo(data){
+	var json = JSON.parse(data);
+	
+	//检查错误
+	if(json.code != 0)
+	{
+		alert("错误：" + json.msg);
+	}
+	
+	var url = json.video.url;
+	
 	var vid = document.createElement("video");
 	vid.src = url;
 	vid.controls = "controls";
