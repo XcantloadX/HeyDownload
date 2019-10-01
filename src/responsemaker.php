@@ -5,7 +5,15 @@ class ResponseMaker
 	
 	function __construct()
 	{
-		$this->json = array();
+		$this->json = array(
+			"code" => 0,
+			"msg" => "No error.",
+			"video" => array(
+				"url" => "",
+				"title" => "",
+				"cover" => ""
+			)
+		);
 		$this->json["video"] = array();
 		$this->setMsg("No error.");
 		$this->setCode(0);
@@ -34,7 +42,7 @@ class ResponseMaker
 	function sendAExit()
 	{
 		$this->send();
-		exit($this->json["code"]);
+		exit;
 	}
 	
 	//设置提示信息
@@ -51,6 +59,11 @@ class ResponseMaker
 	function setUrl($url)
 	{
 		$this->json["video"]["url"] = $url;
+	}
+	
+	function setTitle($title)
+	{
+		$this->json["video"]["title"] = $title;
 	}
 }
 

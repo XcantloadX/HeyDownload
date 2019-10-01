@@ -1,14 +1,16 @@
-var doneBtn, id;
+var doneBtn, id, video, vidtitle;
 
 window.onload = function(){
 	doneBtn = document.getElementById("done");
 	id = document.getElementById("id");
+	video = document.getElementById("vid");
+	vidtitle = document.getElementById("title");
 	
 	doneBtn.onclick = function(){
 		ajax({
 			url: "video.php?vid=" + id.value,
 			callback: function(data){
-				console.log("得到 json：" + data);
+				console.log("服务器返回 json：" + data);
 				showvideo(data);
 			}
 		});
@@ -42,9 +44,6 @@ function showvideo(data){
 	
 	var url = json.video.url;
 	
-	var vid = document.createElement("video");
-	vid.src = url;
-	vid.controls = "controls";
-	vid.autoplay = "autoplay";
-	document.body.append(vid);
+	vidtitle.innerText = json.video.title;
+	video.src = url;
 }

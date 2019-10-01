@@ -78,7 +78,7 @@ data;
 			$rm->setCode(0);
 		
 		$rm->setUrl($this->json->data->data->stream[0]->segs[0]->cdn_url);
-		
+		$rm->setTitle($this->json->data->data->video->title);
 		$rm->sendAExit();
 	}
 	
