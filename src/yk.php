@@ -1,5 +1,4 @@
 <?php
-include("base.php");
 define("YK_APPKEY", "24679788");
 define("YK_URL", "http://acs.youku.com/h5/mtop.youku.play.ups.appinfo.get/1.1/?");
 define("YK_API", "mtop.youku.play.ups.appinfo.get");
