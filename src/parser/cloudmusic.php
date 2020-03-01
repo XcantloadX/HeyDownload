@@ -12,9 +12,13 @@ class CloudMusic extends ParserBase{
 	
 	//从视频链接创建
 	public function createFromUrl($url){
-		$start = strpos($url, "?id=");
-		$end = strpos($url, "userid=") > 0 ? strpos($url, "userid=") - strlen("userid=") + 2 : strlen($url) - $start;
-		$this->songid = substr($url, $start + strlen("?id="), $end - $start);
+		$url = str_replace("/#/", "/", $url);
+		
+		$params = getUrlParams($url);
+		if(!array_key_exists("id", $params))
+			die("Invalid Netease Music url.");
+		
+		$this->songid = $params["id"];
 	}
 	
 	//解析
