@@ -94,18 +94,6 @@ class NeteaseMusicAPI
 //var_dump($array);
 
 //--------------------------------------------------------------------------------------------
-$html = new simple_html_dom();
-$html->load(file_get_contents("https://music.163.com/song?id=1324187377&userid=531092950"));
-$obj = $html->find("script[type=application/ld+json]", 0); //寻找第一个 type=application/ld+json 的 script
 
-$json = $obj->innertext;
-if($json == "")
-	die();
-$json = json_decode($json);
-
-$img = $json->images[0];
-echo "<img src=$img></img>";
-
-$html->clear(); //释放内存
 
 ?>

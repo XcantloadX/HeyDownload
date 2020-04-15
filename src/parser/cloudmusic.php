@@ -31,7 +31,7 @@ class CloudMusic extends ParserBase{
 	//解析
 	public function parse(){
 		$html = new simple_html_dom();
-		$html->load(file_get_contents("https://music.163.com/song?id=1324187377&userid=531092950"));
+		$html->load(file_get_contents("https://music.163.com/song?id=" . $this->songid));
 		$obj = $html->find("script[type=application/ld+json]", 0); //寻找第一个 type=application/ld+json 的 script
 		
 		$json = $obj->innertext;

@@ -27,4 +27,19 @@ function setVideo(url){
 
 function gotoVideo(websiteUrl){
 	setVideo("get/goto.php?url=" + encodeURIComponent(websiteUrl));
+	setInfo(websiteUrl);
+}
+
+//设置对应信息
+function setInfo(url){
+	$.ajax({
+		type: "GET",
+		url: "get/getInfo.php?url=" + encodeURIComponent(url),
+		success: function(data){
+			$("#vid-title").text(data.title);
+			$("#vid-descr").text(data.description);
+			$("#vid-cover").attr("src", data.cover);
+		}
+		
+	});
 }
