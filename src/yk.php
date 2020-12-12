@@ -13,6 +13,7 @@ class YouKu
 	public function __construct()
 	{
 		$this->cookie = $this->getCookie();
+		
 		$this->token = $this->getToken($this->cookie);
 		$this->time = time();
 	}
@@ -52,6 +53,7 @@ data;
 		curl_setopt($ch, CURLOPT_HEADER, false);
 		
 		$data = curl_exec($ch);
+		
 		$json = json_decode($data);
 		$this->json = $json;
 		
@@ -90,7 +92,8 @@ data;
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); //返回内容储存到变量中 
 		curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.96 Safari/537.36"); //设置 UA
 		curl_setopt($ch, CURLOPT_HEADER, true);
-		curl_setopt($ch, CURLOPT_NOBODY, true);
+		//注意此处不能用 CURLOPT_NOBODY，不然会返回 405 错误
+		//curl_setopt($ch, CURLOPT_NOBODY, true); 
 		
 		$data = curl_exec($ch);
 		
