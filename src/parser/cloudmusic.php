@@ -41,7 +41,7 @@ class CloudMusic extends ParserBase{
 		$this->title = $json->title;
 		$this->descr = $json->description;
 		
-		$html->clear(); //释放内存
+		$html->clear();
 	}
 	
 	//返回可用清晰度列表

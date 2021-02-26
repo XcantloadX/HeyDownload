@@ -1,14 +1,14 @@
-var doneBtn, id, video, vidtitle;
+var doneBtn, url, video, vidtitle;
 
 window.onload = function(){
 	doneBtn = document.getElementById("done");
-	id = document.getElementById("id");
+	url = document.getElementById("url");
 	video = document.getElementById("vid");
 	vidtitle = document.getElementById("title");
 	
 	doneBtn.onclick = function(){
 		ajax({
-			url: "video.php?vid=" + id.value,
+			url: "get.php?url=" + url.value,
 			callback: function(data){
 				console.log("服务器返回 json：" + data);
 				showvideo(data);
@@ -40,10 +40,11 @@ function showvideo(data){
 	if(json.code != 0)
 	{
 		alert("错误：" + json.msg);
+        return;
 	}
 	
-	var url = json.video.url;
+	var url = json.data.url;
 	
-	vidtitle.innerText = json.video.title;
+	vidtitle.innerText = json.data.title;
 	video.src = url;
 }
