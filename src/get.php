@@ -9,16 +9,16 @@ if($url == ""){
     die("url 为空。");
 }
     
-
-$websites = array(
-	"youku.com" => "youku", //域名 => php 文件名
+//域名 => php 文件名
+$parsers = array(
+	"youku.com" => "youku", 
 	"haokan.baidu.com" => "haokan",
 	"bilibili.com" => "bilibili",
 	"music.163.com" => "cloudmusic"
 );
 
 //遍历配对
-foreach($websites as $k=>$v){
+foreach($parsers as $k=>$v){
     if(strpos($url, $k) > 0){ //如果匹配成功
         include("./parser/".$v.".php");
         init($url, $redirect); //这个是 parser 下 php 文件里应该定义的函数

@@ -1,14 +1,21 @@
 <?php
-require(__ROOT__."/lib/util.php");
-require(__ROOT__."/lib/simple_html_dom.php");
-require(__ROOT__."/parser/parserBase.php");
+require "./lib/simple_html_dom.php";
 
-//获取对象实例
-function newCloudMusic(){
-	return new CloudMusic();
+function init($url, $redirect){
+    $cm = new CloudMusic($url);
+    if($redirect)
+        redirect($cm->getUrl());
+    $response = makeResponse(0, 
+                        "成功",
+                        "audio", 
+                        array(array("quality" => "default", "url" => $cm->getUrl())),
+                        $cm->getInfo()
+                       );
+    
+    succeed($response);
 }
 
-class CloudMusic extends ParserBase{
+class CloudMusic{
 	private $songid;
 	
 	private $cover;
@@ -17,16 +24,17 @@ class CloudMusic extends ParserBase{
 	private $author;
 	private $timestamp;
 	
-	//从视频链接创建
-	public function createFromUrl($url){
-		$url = str_replace("/#/", "/", $url);
+    public function __construct($url){
+        $url = str_replace("/#/", "/", $url);
 		
 		$params = getUrlParams($url);
 		if(!array_key_exists("id", $params))
-			die("Invalid Netease Music url.");
+			fail("链接无效。", 400);
 		
 		$this->songid = $params["id"];
-	}
+        $this->parse();
+    }
+    
 	
 	//解析
 	public function parse(){
@@ -37,6 +45,7 @@ class CloudMusic extends ParserBase{
 		$json = $obj->innertext;
 		$json = json_decode($json);
 		
+        
 		$this->cover = $json->images[0];
 		$this->title = $json->title;
 		$this->descr = $json->description;

@@ -1,12 +1,12 @@
 var doneBtn, url, video, vidtitle;
 
-window.onload = function(){
+window.onload = function() {
 	doneBtn = document.getElementById("done");
 	url = document.getElementById("url");
 	video = document.getElementById("vid");
 	vidtitle = document.getElementById("title");
 	
-	doneBtn.onclick = function(){
+	doneBtn.onclick = function() {
 		ajax({
 			url: "get.php?url=" + url.value,
 			callback: function(data){
@@ -14,27 +14,33 @@ window.onload = function(){
 				showvideo(data);
 			}
 		});
-	}
-}
+	};
+};
 
-function ajax(params){
+function ajax(params) {
 	var http = new XMLHttpRequest();
 	var data;
 	var method = params.method ? params.method : "GET";
 	var sync = (params.sync == undefined) ? true : false;
 	
 	http.open(method, params.url, sync);
-	http.onreadystatechange = function(){
+	http.onreadystatechange = function() {
 		if (http.readyState == 4){
 			params.callback(http.responseText);
 		}
-	}
+	};
 	
 	http.send();
 }
 
 function showvideo(data){
-	var json = JSON.parse(data);
+    var json = undefined;
+    try{
+        json = JSON.parse(data);
+    }
+	catch{
+        log.error("服务器返回异常。");
+    }
 	
 	//检查错误
 	if(json.code != 0)
@@ -43,7 +49,7 @@ function showvideo(data){
         return;
 	}
 	
-	var url = json.data.url;
+	var url = json.data.urls[0].url;
 	
 	vidtitle.innerText = json.data.title;
 	video.src = url;
