@@ -2,22 +2,54 @@
 	<head>
 		<title>解析 Demo</title>
 		<meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+		<!--Material CSS-->
+		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+		<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
 		<script type="text/javascript" src="index.js"></script>
-        <link rel="stylesheet" href="style.css"></link>
 	</head>
 	
 	<body>
-		<form>
-			<span>视频链接：</span>
-			<input id="url" value="https://v.youku.com/v_show/id_XNDMxMzY3OTk2NA==.html" />
-			<input type="button" id="done" value="开始！">
-		</form>
+		<nav class="light-blue">
+			<div class="nav-wrapper container">
+				<span class="brand-logo">解析 Demo</span>
+			</div>
+		</nav>
+
+		<br>
+		<br>
+		<div class="container">
+			<div class="row">
+
+				<form class="col s12">
+					<div class="row">
+						<div class="input-field col s10">
+							<label for="url">视频链接</label>
+							<input class="validate" id="url" type="text" value="https://v.youku.com/v_show/id_XNDMxMzY3OTk2NA==.html" />
+						</div>
+
+						<div class="input-field col s2">
+							<input type="button" id="done" class="btn waves-effect waves-light" value="开始！">
+						</div>
+					</div>
+
+				</form>
+			</div>
+		</div>
+
 		
-		<hr />
-		<p>标题：<span id="title"></span></p>
-		<p>视频预览：</p>
-		<video id="vid" controls autoplay />
+		<div class="container">
+			<h3>解析结果</h3>
+			<div class="col s10">
+				<p>标题：<span id="title"></span></p>
+			</div>
+			<div class="col s10">
+
+				<video id="vid" controls autoplay>
+			</div>
+		</div>
+
 	</body>
 
 <html>

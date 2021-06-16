@@ -4,6 +4,8 @@ require "lib/util.php";
 //是否直接重定向到目标地址
 $redirect = isset($_GET["redirect"]) ? true : false;
 $url = isset($_GET["url"]) ? $_GET["url"] : "";
+$origin = isset($_GET["origin"]) ? true : false;
+
 if($url == ""){
     header("HTTP/1.1 400");
     die("url 为空。");

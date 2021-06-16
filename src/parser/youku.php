@@ -40,6 +40,7 @@ class YouKu
 }
 data;
 		
+		
 		//拼接参数
 		$params = array(
             "jsv" => "2.5.8",
@@ -61,12 +62,11 @@ data;
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); //返回内容储存到变量中 
 		curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.96 Safari/537.36"); //设置 UA
 		
-        //TODO “客户端非法，201”，貌似是调用频率太快（不确定）
+        //TODO “客户端非法，201”，貌似是调用频率太快，触发了防爬，建议十分钟之后再试
 		$data = curl_exec($ch);
-        //echo $data;
 		$json = json_decode($data);
         if(isset($json->data->data->error))
-            fail("优酷 API 返回错误。", 500);
+            fail("优酷 API 返回错误。".$json->data->data->error->note, 500);
 		$this->json = $json;
 		
 		//返回地址
