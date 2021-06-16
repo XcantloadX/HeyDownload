@@ -16,7 +16,8 @@ $parsers = array(
 	"youku.com" => "youku", 
 	"haokan.baidu.com" => "haokan",
 	"bilibili.com" => "bilibili",
-	"music.163.com" => "cloudmusic"
+    "music.163.com" => "cloudmusic",
+    "y.qq.com" => "qqmusic"
 );
 
 //遍历配对

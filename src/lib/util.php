@@ -25,8 +25,9 @@ function getUrlParams(string $url){
 * @param msg 信息
 * @param code HTTP 状态码
 */
-function fail(string $msg, int $code){
-    header("HTTP/1.1 $code");
+function fail(string $msg, int $httpcode){
+    header("HTTP/1.1 $httpcode");
+    header("Content-Type: application/json");
     die("{\"code\": -1, \"msg\": $msg }");
 }
 
