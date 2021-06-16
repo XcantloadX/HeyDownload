@@ -1,5 +1,3 @@
-var doneBtn, url, video, vidtitle;
-
 $(function(){
 	$("#done").click(function(){
 		$.get("get.php?url=" + $("#url").val(), function(data){
@@ -10,24 +8,16 @@ $(function(){
 });
 
 function showvideo(data){
-    var json = undefined;
-    try{
-        json = JSON.parse(data);
-    }
-	catch{
-		console.error("服务器返回异常。");
-		return;
-    }
-	
 	//检查错误
-	if(json.code != 0)
+	if(data.code != 0)
 	{
-		alert("错误：" + json.msg);
+		alert("错误：" + data.msg);
         return;
 	}
 	
-	var url = json.data.urls[0].url;
-	
-	vidtitle.innerText = json.data.title;
-	video.src = url;
+	let url = data.data.urls[0].url;
+	$("#type").text(data.data.type);
+	$("#author").text(data.data.author);
+	$("#title").text(data.data.title);
+	$("#vid").attr("src", url);
 }
