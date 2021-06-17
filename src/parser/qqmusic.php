@@ -99,7 +99,7 @@ DATA;
   $res = array(
     "code" => 0,
     "data" => array(
-      "type" => "music",
+      "type" => "audio",
       "urls" => array(
         0 => array("quality"=>"unknown", "url" => $ret->req_1->data->sip[0].$ret->req_1->data->midurlinfo[0]->purl),
         1 => array("quality"=>"unknown", "url" => $ret->req_1->data->sip[1].$ret->req_1->data->midurlinfo[0]->purl),

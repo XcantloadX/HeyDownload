@@ -1,13 +1,28 @@
 <?php
-require(__ROOT__."/lib/util.php");
-require(__ROOT__."/parser/parserBase.php");
-
-//获取对象实例
-function newHaoKan(){
-	return new HaoKan();
+//入口函数
+function init($url, $redirect){
+	$hk = new HaoKan();
+	$hk->createFromUrl($url);
+	$hk->parse();
+	if($redirect){
+		redirect($hk->getUrl());
+	}
+	else{
+		$info = $hk->getInfo();
+		$response = array(
+			"code" => 0,
+			"data" => array(
+			  "type" => "video",
+			  "urls" => $hk->getList(),
+			  "title" => $info["title"],
+			  "author" => $info["author"]
+			)
+		  );
+		  succeed($response);
+	}
 }
 
-class HaoKan extends ParserBase{
+class HaoKan{
 	private $vid;
 	private $json;
 	
@@ -49,7 +64,6 @@ class HaoKan extends ParserBase{
 	}
 	
 	//返回可用清晰度列表
-	//格式参见：ParserBase.php
 	public function getList(){
 		$newList = array();
 		$oldList = $this->json->curVideoMeta->clarityUrl;
@@ -58,10 +72,8 @@ class HaoKan extends ParserBase{
 		foreach($oldList as $obj){
 			$hw = explode("$$", $obj->vodVideoHW); //高宽
 			$singleVideo = array(
-				"name" => $obj->title,
-				"url" => $obj->url,
-				"width" => intval($hw[1]),
-				"height" => intval($hw[0])
+				"quality" => $obj->title,
+				"url" => $obj->url
 			);
 			array_push($newList, $singleVideo); //加入总数组
 		}
