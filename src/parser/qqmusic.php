@@ -1,4 +1,8 @@
 <?php
+//TODO 支持 QQ 音乐另一种 URL https://y.qq.com/n/yqq/song/004Of2MN0iIjD2.html
+//TODO 支持封面 URL，歌词
+//TODO 替换掉 curl 库
+
 //入口函数
 function init($url, $redirect){
   $songid = substr($url, -14);
@@ -56,7 +60,7 @@ DATA;
   $curl = curl_init();
 
   curl_setopt_array($curl, array(
-    CURLOPT_URL => "https://u.y.qq.com/cgi-bin/musics.fcg?sign=".getSign($json),
+    CURLOPT_URL => "http://u.y.qq.com/cgi-bin/musics.fcg?sign=".getSign($json), //使用 http，https 有几率造成证书错误之类的
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => '',
     CURLOPT_MAXREDIRS => 10,
