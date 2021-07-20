@@ -4,6 +4,10 @@ $(function(){
 		run($("#url").val());
 	});
 
+	$("#test").click(function(){
+		window.open(window.location.toString() + "\\get.php?url=" + $("#url").val());
+	});
+
 	$(".example-url").click(function(){
 		$("#url").val($(this).attr("data-url"));
 		run($(this).attr("data-url"));
@@ -66,6 +70,10 @@ function run(url){
 	$("#done").addClass("disabled");
 	$.get("get.php?url=" + url, function(data){
 		console.log("Server returned: ", data);
+		if(window.ap != undefined)
+			ap.pause();
+		if(window.dp != undefined)
+			dp.pause();
 		load(data);
 		$("#done").removeClass("disabled");
 	});

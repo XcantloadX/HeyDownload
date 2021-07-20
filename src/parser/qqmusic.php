@@ -82,16 +82,19 @@ DATA;
   ));
   
   $response = curl_exec($curl);
-  
+
+  //输出 raw
+    if(_has("raw"))
+        exit($response);
+
   curl_close($curl);
   $ret = json_decode($response);
 
   //echo $response;
 
   //错误检查
-  $code = $ret->req_1->code;
-  if($response == "Not Found" || $code != 0){
-    fail("Request qqmusic server failed. code=".$code, 500);
+  if($ret->code != 0 || $ret->req_1->code != 0 || (is_string($response) && $response == "Not Found")){
+    fail("Request qqmusic server failed. code=".$ret->code, 500);
   }
   
   //获取所有歌手
@@ -107,7 +110,7 @@ DATA;
   //获取封面
   //QQ 音乐中单曲封面 = 专辑封面！
     $albumMid = $ret->req_2->data->track_info->album->mid;
-  if($albumMid == "" || $albumMid == 0){
+  if($albumMid == ""){
       $cover = "";
   }else{
       $cover = "https://y.qq.com/music/photo_new/T002R300x300M000$albumMid.jpg?max_age=2592000";

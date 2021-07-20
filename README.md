@@ -19,7 +19,7 @@ PHP 音视频解析
 **注意：下面的 bool 类型参数中非空表示 true，空表示 false**  
 
 string `url`：待解析 URL  
-bool `redirect`：是否直接重定向到目标地址（可以直接放在 video/audio 标签的 src 中）（前提是对方没有设置 Referer 限制）。
+bool `redirect`：是否直接重定向到目标地址（可以直接放在 video/audio 标签的 src 中）（前提是对方没有设置 Referer 限制）。  
 下面的暂时不能用  
 bool `raw`：不统一返回格式，按照原服务器的返回结果返回  
 array `action`：动作，包括：`Default`、`GetUrl`、`GetCover`、`GetLyric`、`GetInfo`，可以叠加多个，使用英文逗号分割，不区分大小写  

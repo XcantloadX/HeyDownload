@@ -1,6 +1,6 @@
 <?php
 //入口函数
-function init($url, $redirect){
+function init(){
 	$hk = new HaoKan();
 	$hk->createFromUrl(_get("url"));
 	$hk->parse();
