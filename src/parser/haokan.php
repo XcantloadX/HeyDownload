@@ -2,9 +2,9 @@
 //入口函数
 function init($url, $redirect){
 	$hk = new HaoKan();
-	$hk->createFromUrl($url);
+	$hk->createFromUrl(_get("url"));
 	$hk->parse();
-	if($redirect){
+	if(_has("redirect")){
 		redirect($hk->getUrl());
 	}
 	else{

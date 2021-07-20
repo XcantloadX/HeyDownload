@@ -9,7 +9,7 @@ $origin = isset($_GET["origin"]) ? true : false;
 
 if($url == ""){
     header("HTTP/1.1 400");
-    die("url 为空。");
+    fail("url 为空。");
 }
     
 //域名 => php 文件名
@@ -18,13 +18,14 @@ $parsers = array(
 	"haokan.baidu.com" => "haokan",
 	"bilibili.com" => "bilibili",
     "music.163.com" => "cloudmusic",
-    "y.qq.com" => "qqmusic"
+    "y.qq.com" => "qqmusic",
+    "music.qq.com" => "qqmusic",
 );
 
 //遍历配对
 foreach($parsers as $k=>$v){
     if(strpos($url, $k) > 0){ //如果匹配成功
         include("./parser/".$v.".php");
-        init($url, $redirect); //这个是 parser 下 php 文件里应该定义的函数
+        init(); //这个是 parser 下 php 文件里应该定义的函数
     }
 }

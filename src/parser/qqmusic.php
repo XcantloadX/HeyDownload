@@ -4,12 +4,14 @@ require_once 'vendor/autoload.php';
 //TODO 支持封面 URL，歌词 √
 //TODO 替换掉 curl 库 √
 
+global $json;
+
 //入口函数
-function init($url, $redirect){
-  $songid = substr($url, -14);
+function init(){
+  $songid = substr(_get("url"), -14);
   $res = run($songid);
   
-  if($redirect){
+  if(_has("redirect")){
     redirect($res["data"]["urls"][0]["url"]);
   }
   else{
@@ -133,12 +135,14 @@ DATA;
  * @param string $songmid 歌曲 mid
  * @return false|string 歌词
  */
-function getLyric(string $songmid){
+function getLyric(string $songmid, array $data = null){
     $ret = json_decode(Requests::get("https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg?_=1626762812506&cv=4747474&ct=24&format=json&inCharset=utf-8&outCharset=utf-8&notice=0&platform=yqq.json&needNewCode=1&songmid=$songmid",
         array("Referer" => "https://y.qq.com/"))->body);
     if($ret == null || $ret->retcode != 0 || $ret->code != 0)
         return "";
 
+    if($data != null)
+        $data["lyric"] = $ret->lyric;
     return base64_decode($ret->lyric);
 }
 

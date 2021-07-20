@@ -1,9 +1,9 @@
 <?php
 require "./lib/simple_html_dom.php";
 
-function init($url, $redirect){
-    $cm = new CloudMusic($url);
-    if($redirect)
+function init(){
+    $cm = new CloudMusic(_get("url"));
+    if(_has("redirect"))
         redirect($cm->getUrl());
     $response = makeResponse(0, 
                         "成功",

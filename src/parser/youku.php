@@ -3,15 +3,15 @@ define("YK_APPKEY", "24679788");
 define("YK_URL", "https://acs.youku.com/h5/mtop.youku.play.ups.appinfo.get/1.1/?");
 define("YK_API", "mtop.youku.play.ups.appinfo.get");
 
-function init($url, $redirect){
-    preg_match("/id_(.*).html/", $url, $matches);
+function init(){
+    preg_match("/id_(.*).html/", _get("url"), $matches);
     if(count($matches) < 2 || $matches[1] == "")
         fail("URL 格式不正确", 400);
     $id = $matches[1];
         
     $yk = new YouKu();
     $yk->process($id);
-    $yk->response($redirect);
+    $yk->response(_has("redirect"));
 }
 
 class YouKu

@@ -55,3 +55,32 @@ function makeResponse(int $code, string $msg, string $type, array $urlList, arra
         "data" => $data
     );
 }
+
+/** $_GET[] 的封装
+ * @param string $name URL 参数名称
+ * @return mixed|null 值
+ */
+function _get(string $name){
+    if(isset($_GET[$name]))
+        return $_GET[$name];
+    else
+        return null;
+}
+
+/** 判断请求 URL 中是否存在某个参数
+ * @param string $name URL 参数名称
+ * @return bool 是否存在
+ */
+function _has(string $name){
+    return isset($_GET[$name]);
+}
+
+/** 获取请求的 Action
+ * @return false|string[] action Array
+ */
+function _getActions(){
+    $str = _get("action");
+    if($str == null || $str == "")
+        fail("action 为空", 400);
+    return explode(",", $str);
+}
