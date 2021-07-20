@@ -22,41 +22,42 @@ function init(){
 function run(string $songid) : array{
   //post 请求参数
   $json = <<<DATA
-  {
+{
     "comm": {
-      "cv": 4747474,
-      "ct": 24,
-      "format": "json",
-      "inCharset": "utf-8",
-      "outCharset": "utf-8",
-      "notice": 0,
-      "platform": "yqq.json",
-      "needNewCode": 1,
-      "g_tk_new_20200303": 53883209,
-      "g_tk": 53883209
+        "cv": 4747474,
+        "ct": 24,
+        "format": "json",
+        "inCharset": "utf-8",
+        "outCharset": "utf-8",
+        "notice": 0,
+        "platform": "yqq.json",
+        "needNewCode": 1,
+        "g_tk_new_20200303": 53883209,
+        "g_tk": 53883209
     },
     "req_1": {
-      "module": "vkey.GetVkeyServer",
-      "method": "CgiGetVkey",
-      "param": {
-        "guid": "5932328698",
-        "songmid": [
-          "$songid"
-        ],
-        "songtype": [
-          0
-        ],
-        "loginflag": 0,
-        "platform": "20"
-      }
+        "module": "vkey.GetVkeyServer",
+        "method": "CgiGetVkey",
+        "param": {
+            "guid": "5932328698",
+            "songmid": [
+                "$songid"
+            ],
+            "songtype": [
+                0
+            ],
+            "loginflag": 0,
+            "platform": "20"
+        }
     },
     "req_2": {
-      "method": "get_song_detail_yqq",
-      "module": "music.pf_song_detail_svr",
-      "param": {
-        "song_mid": "$songid"
-      }
+        "method": "get_song_detail_yqq",
+        "module": "music.pf_song_detail_svr",
+        "param": {
+            "song_mid": "$songid"
+        }
     }
+}
 DATA;
 
   $curl = curl_init();
