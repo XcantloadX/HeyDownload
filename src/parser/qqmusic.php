@@ -1,7 +1,8 @@
 <?php
+require_once 'vendor/autoload.php';
 //TODO 支持 QQ 音乐另一种 URL https://y.qq.com/n/yqq/song/004Of2MN0iIjD2.html
-//TODO 支持封面 URL，歌词
-//TODO 替换掉 curl 库
+//TODO 支持封面 URL，歌词 √
+//TODO 替换掉 curl 库 √
 
 //入口函数
 function init($url, $redirect){
@@ -54,13 +55,12 @@ function run(string $songid) : array{
         "song_mid": "$songid"
       }
     }
-  }
 DATA;
 
   $curl = curl_init();
 
   curl_setopt_array($curl, array(
-    CURLOPT_URL => "http://u.y.qq.com/cgi-bin/musics.fcg?sign=".getSign($json), //使用 http，https 有几率造成证书错误之类的
+    CURLOPT_URL => "http://u.y.qq.com/cgi-bin/musics.fcg?sign=".makeSign($json), //使用 http，https 有几率造成证书错误之类的
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => '',
     CURLOPT_MAXREDIRS => 10,
@@ -83,6 +83,8 @@ DATA;
   curl_close($curl);
   $ret = json_decode($response);
 
+  //echo $response;
+
   //错误检查
   $code = $ret->req_1->code;
   if($response == "Not Found" || $code != 0){
@@ -99,6 +101,16 @@ DATA;
     $singerStr = $singerStr.$v->name;
   }
 
+  //获取封面
+  //QQ 音乐中单曲封面 = 专辑封面！
+    $albumMid = $ret->req_2->data->track_info->album->mid;
+  if($albumMid == "" || $albumMid == 0){
+      $cover = "";
+  }else{
+      $cover = "https://y.qq.com/music/photo_new/T002R300x300M000$albumMid.jpg?max_age=2592000";
+  }
+
+
   //拼接响应
   $res = array(
     "code" => 0,
@@ -109,15 +121,33 @@ DATA;
         1 => array("quality"=>"unknown", "url" => $ret->req_1->data->sip[1].$ret->req_1->data->midurlinfo[0]->purl),
       ),
       "title" => $ret->req_2->data->track_info->title,
-      "author" => $singerStr
+      "author" => $singerStr,
+        "cover" => $cover
     )
   );
   
   return $res;
 }
 
+/** 获取歌词
+ * @param string $songmid 歌曲 mid
+ * @return false|string 歌词
+ */
+function getLyric(string $songmid){
+    $ret = json_decode(Requests::get("https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg?_=1626762812506&cv=4747474&ct=24&format=json&inCharset=utf-8&outCharset=utf-8&notice=0&platform=yqq.json&needNewCode=1&songmid=$songmid",
+        array("Referer" => "https://y.qq.com/"))->body);
+    if($ret == null || $ret->retcode != 0 || $ret->code != 0)
+        return "";
 
-function getSign(string $param) : string{
+    return base64_decode($ret->lyric);
+}
+
+/** 生成 sign
+ * @param string $param 要提交的参数
+ * @return string 生成的 sign
+ * @throws Exception 由 bin2hex() 抛出
+ */
+function makeSign(string $param) : string{
     //https://blog.csdn.net/qq_23594799/article/details/111477320
     //sign = "zza" + 随机十位字符 + md5($param);
     return "zza".bin2hex(random_bytes(5)).md5("CJBPACrRuNy7".$param);

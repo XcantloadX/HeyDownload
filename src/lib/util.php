@@ -1,5 +1,7 @@
 <?php
-//重定向
+/** 重定向到指定 URL
+ * @param string $url URL
+ */
 function redirect(string $url) : void{
 	header("Location: $url");
     exit;
@@ -20,10 +22,10 @@ function getUrlParams(string $url){
 	return $params;
 } 
 
-/*
+/**
 * 结束执行，并返回错误信息
-* @param msg 信息
-* @param code HTTP 状态码
+* @param string msg 信息
+* @param int code HTTP 状态码
 */
 function fail(string $msg, int $httpcode){
     header("HTTP/1.1 $httpcode");
@@ -31,11 +33,11 @@ function fail(string $msg, int $httpcode){
     die("{\"code\": -1, \"msg\": $msg }");
 }
 
-/*
+/**
 * 结束执行，并返回 json 文本
-* @param obj 要输出的 Object
+* @param array obj 要输出的 Object
 */
-function succeed(array $obj) : void{
+function succeed(array $obj){
     header("Content-Type: application/json");
     echo json_encode($obj);
 }

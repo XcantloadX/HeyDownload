@@ -1,5 +1,6 @@
 <?php
-require "lib/util.php";
+require_once 'vendor/autoload.php';
+require_once "lib/util.php";
 
 //是否直接重定向到目标地址
 $redirect = isset($_GET["redirect"]) ? true : false;
