@@ -1,4 +1,6 @@
 <?php
+define("UA_WIN10_EDGE", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36 Edg/92.0.902.67");
+
 /** 重定向到指定 URL
  * @param string $url URL
  */
@@ -71,7 +73,7 @@ function _get(string $name){
  * @param string $name URL 参数名称
  * @return bool 是否存在
  */
-function _has(string $name){
+function _has(string $name) : bool{
     return isset($_GET[$name]);
 }
 

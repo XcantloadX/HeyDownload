@@ -1,31 +1,58 @@
 <?php
 require_once 'vendor/autoload.php';
 require_once "lib/util.php";
+require_once "parser/base.php";
 
 //是否直接重定向到目标地址
-$redirect = isset($_GET["redirect"]) ? true : false;
-$url = isset($_GET["url"]) ? $_GET["url"] : "";
-$origin = isset($_GET["origin"]) ? true : false;
+$redirect = _has("redirect");
+$url = _get("url");
+$raw = _has("raw");
+
+//处理 actions
+if(!isset($_GET["actions"]))
+    $actions = array("getUrls", "getCoverUrl", "getTitle", "getAuthor");
+else
+    $actions = explode(",", $_GET["actions"]);
+if(in_array("default", $actions)){
+    unset($actions[array_search("default", $actions)]);
+    $actions = array_merge($actions, array("getUrls", "getCoverUrl", "getTitle", "getAuthor"));
+}
 
 if($url == ""){
     header("HTTP/1.1 400");
     fail("url 为空。");
 }
     
-//域名 => php 文件名
+//域名 => 类名
 $parsers = array(
-	"youku.com" => "youku", 
-	"haokan.baidu.com" => "haokan",
-	"bilibili.com" => "bilibili",
-    "music.163.com" => "cloudmusic",
-    "y.qq.com" => "qqmusic",
-    "music.qq.com" => "qqmusic",
+	"youku.com" => "YouKu",
+	"haokan.baidu.com" => "HaoKan",
+	"bilibili.com" => "Bilibili",
+    "music.163.com" => "Cloudmusic",
+    "y.qq.com" => "QQMusic",
+    "music.qq.com" => "QQMusic",
 );
 
+$data = array();
 //遍历配对
 foreach($parsers as $k=>$v){
     if(strpos($url, $k) > 0){ //如果匹配成功
-        include("./parser/".$v.".php");
-        init(); //这个是 parser 下 php 文件里应该定义的函数
+        include("./parser/".strtolower($v).".php");
+        $ins = new $v($url);
+        if($redirect){
+            header("Location: ".$ins->getUrl());
+            exit;
+        }else{
+            foreach ($actions as $action){
+                if($action != "")
+                    $data = array_merge($data, $ins->$action());
+            }
+        }
+        $data["type"] = $ins->getType();
+        $response = array("code" => $ins->getCode(), "msg" => $ins->getMsg(), "data" => $data);
+        header("Content-Type: application/json");
+        echo json_encode($response, JSON_UNESCAPED_UNICODE);
     }
 }
+
+

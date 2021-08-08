@@ -15,37 +15,52 @@ $(function(){
 });
 
 function load(data){
-	if(data.code != 0)
+	if(data.code !== 0)
 	{
 		alert("服务器返回错误：" + data.msg);
         return;
 	}
 
-	let url = data.data.urls[0].url;
-	$("#type").text(data.data.type);
-	$("#author").text(data.data.author);
-	$("#title").text(data.data.title);
+	try{
+		let url = data.data.urls[0].url;
+		$("#type").text(data.data.type);
+		$("#author").text(data.data.author);
+		$("#title").text(data.data.title);
 
-	if(data.data.type == "audio"){
-		loadAPlayer(url, data.data.title, data.data.author, data.data.cover);
-		$("#player-container").removeClass("s12");
-		$("#player-container").addClass("s5");
+		if(data.data.type === "audio"){
+			loadAPlayer(url, data.data.title, data.data.author, data.data.cover, data.data.lyric);
+			$("#player-container").removeClass("s12").addClass("s6");
+		}
+		else if(data.data.type === "video"){
+			loadDPlayer(url, data.cover);
+			$("#player-container").removeClass("s6").addClass("s12");
+		}
+	}catch (e) {
+		alert("错误：" + e.toString());
+	}finally {
+		$("#done").removeClass("disabled");
 	}
-	else if(data.data.type == "video"){
-		loadDPlayer(url, data.cover);
-		$("#player-container").removeClass("s5");
-		$("#player-container").addClass("s12");
-	}
+
 }
 
-function loadAPlayer(url, title, author, coverUrl){
+/**
+ * 加载音频
+ * @param url
+ * @param title
+ * @param author
+ * @param coverUrl
+ * @param lrc
+ */
+function loadAPlayer(url, title, author, coverUrl, lrc){
 	window.ap = new APlayer({
 		container: $("#player")[0],
+		lrcType: 1,
 		audio: [{
 			name: title,
 			artist: author,
 			url: url,
-			cover: coverUrl
+			cover: coverUrl,
+			lrc: lrc
 		}]
 	});
 
@@ -68,7 +83,7 @@ function loadDPlayer(url, coverUrl){
 
 function run(url){
 	$("#done").addClass("disabled");
-	$.get("get.php?url=" + url, function(data){
+	$.get("get.php?url=" + url  + "&actions=default,getLyric", function(data){
 		console.log("Server returned: ", data);
 		if(window.ap != undefined)
 			ap.pause();

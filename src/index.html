@@ -3,17 +3,18 @@
 		<title>解析 Demo</title>
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<!--禁止传递 Referer，绕过某些网站的防盗链检测-->
 		<meta name="referrer" content="never">
 		<script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 		<!--Material CSS-->
-		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
-		<script src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+		<link rel="stylesheet" href="//cdn.bootcdn.net/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+		<script src="//cdn.bootcdn.net/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
 		<!--APlayer-->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.js" integrity="sha512-RWosNnDNw8FxHibJqdFRySIswOUgYhFxnmYO3fp+BgCU7gfo4z0oS7mYFBvaa8qu+axY39BmQOrhW3Tp70XbaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.css" integrity="sha512-CIYsJUa3pr1eoXlZFroEI0mq0UIMUqNouNinjpCkSWo3Bx5NRlQ0OuC6DtEB/bDqUWnzXc1gs2X/g52l36N5iw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+		<script src="//cdn.bootcdn.net/ajax/libs/aplayer/1.9.1/APlayer.min.js"></script>
+		<link rel="stylesheet" href="//cdn.bootcdn.net/ajax/libs/aplayer/1.9.1/APlayer.min.css"/>
 		<!--DPlayer-->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/dplayer/1.26.0/DPlayer.min.js" integrity="sha512-1t2U1/0xGhBZAriD+/9llOhjPs5nFBDZ7KbnHB4SGwAUPrzyS+02Kus1cz0exk5eMyXxwfHxj/1JLuie/p6xXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		<script src="//cdn.bootcdn.net/ajax/libs/dplayer/1.26.0/DPlayer.min.js"></script>
 
 		<script type="text/javascript" src="index.js"></script>
 	</head>
@@ -37,17 +38,17 @@
 							<input class="validate" id="url" type="text" value="https://v.youku.com/v_show/id_XNDMxMzY3OTk2NA==.html" />
 						</div>
 
-						<div class="input-field col s4">
-							<input type="button" id="done" class="btn waves-effect waves-light" value="开始！"/>
-							<input type="button" id="test" class="btn waves-effect waves-light" value="测试 API"/>
+						<div class="col s4">
+							<input type="button" id="done" class="btn" value="开始！"/>
+							<input type="button" id="test" class="btn" value="测试 API"/>
 						</div>
 					</div>
 					
 					<div class="row">
 						<span>不知道输些什么？试试这些：</span>
 						<div class="col s12">
-							<input type="button" class="btn example-url" data-url="https://y.qq.com/n/ryqq/songDetail/004Jb2Ra312pz3" value="QQ 音乐"/>
-							<input type="button" class="btn example-url" data-url="https://music.163.com/song?id=5221167" value="网易云音乐"/>
+							<input type="button" class="btn example-url" data-url="https://y.qq.com/n/ryqq/songDetail/004Jb2Ra312pz3" value="QQ 音乐单曲"/>
+							<input type="button" class="btn example-url" data-url="https://music.163.com/song?id=5221167" value="网易云音乐单曲"/>
 							<input type="button" class="btn example-url" data-url="https://v.youku.com/v_show/id_XNDMxMzY3OTk2NA==.html" value="优酷"/>
 							<input type="button" class="btn example-url" data-url="https://haokan.baidu.com/v?vid=11222495673540217469" value="好看视频"/>
 						</div>
@@ -58,11 +59,12 @@
 
 		
 		<div class="container">
-			<h3>解析结果</h3>
+			<h4>解析结果</h4>
 			<div class="col s10">
 				<p>类型：<span id="type"></span></p>
 				<p>标题：<span id="title"></span></p>
 				<p>作者：<span id="author"></span></p>
+				<p>预览：</p>
 			</div>
 			<div class="row">
 				<div id="player-container" class="col s12">
