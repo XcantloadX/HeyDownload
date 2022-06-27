@@ -3,14 +3,6 @@ define("YK_APPKEY", "24679788");
 define("YK_URL", "https://acs.youku.com/h5/mtop.youku.play.ups.appinfo.get/1.1/?");
 define("YK_API", "mtop.youku.play.ups.appinfo.get");
 
-function init(){
-
-        
-    $yk = new YouKu();
-    $yk->run($id);
-    $yk->response(_has("redirect"));
-}
-
 class YouKu extends ParserBase
 {
 	private $token;
@@ -59,15 +51,13 @@ data;
 		
 		$url = YK_URL.http_build_query($params);
 		
-		$ch = curl_init($url);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($ch, CURLOPT_COOKIE, $this->cookie);
-		curl_setopt($ch, CURLOPT_REFERER, "https://v.youku.com/v_show/id_".$this->id.".html");
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); //返回内容储存到变量中 
-		curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.96 Safari/537.36"); //设置 UA
-		
         //TODO “客户端非法，201”，貌似是调用频率太快，触发了防爬，建议十分钟之后再试
-		$data = curl_exec($ch);
+		$data = Requests::get($url, 
+		array(
+			"Referer" => "https://v.youku.com/v_show/id_".$this->id.".html",
+			"Cookie" => $this->cookie,
+			"User-Agent" => "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.96 Safari/537.36"
+		))->body;
 		$json = json_decode($data);
         if(isset($json->data->data->error)){
             //fail("优酷 API 返回错误。".$json->data->data->error->note, 500);
@@ -108,16 +98,11 @@ data;
 	private function getCookie()
 	{
 		//发送请求
-		$ch = curl_init("http://acs.youku.com/h5/mtop.youku.play.ups.appinfo.get/1.1/?appKey=24679788&api=mtop.youku.play.ups.appinfo.get&t=".time());
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); //返回内容储存到变量中 
-		curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.96 Safari/537.36"); //设置 UA
-		curl_setopt($ch, CURLOPT_HEADER, true);
-		//注意此处不能用 CURLOPT_NOBODY，不然会返回 405 错误
-		//curl_setopt($ch, CURLOPT_NOBODY, true); 
-		
-		$data = curl_exec($ch);
-		
+		$data = Requests::get("https://acs.youku.com/h5/mtop.youku.play.ups.appinfo.get/1.1/?appKey=24679788&api=mtop.youku.play.ups.appinfo.get&t=".time(),
+		array(
+			"User-Agent" => "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.96 Safari/537.36"
+		))->raw;
+
 		//分割响应头
 		$headers = explode(PHP_EOL, $data);
 		$cookie = "";

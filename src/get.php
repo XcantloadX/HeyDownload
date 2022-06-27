@@ -20,7 +20,7 @@ if(in_array("default", $actions)){
 
 if($url == ""){
     header("HTTP/1.1 400");
-    fail("url 为空。");
+    fail("url 为空。", 400);
 }
     
 //域名 => 类名

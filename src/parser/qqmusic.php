@@ -1,5 +1,4 @@
 <?php
-//TODO 把 curl 改为 Request 库
 //TODO 支持 QQ 音乐另一种 URL https://y.qq.com/n/yqq/song/004Of2MN0iIjD2.html
 class QQMusic extends ParserBase {
     public function __construct(string $url){
@@ -47,35 +46,20 @@ class QQMusic extends ParserBase {
     }
 }
 DATA;
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "http://u.y.qq.com/cgi-bin/musics.fcg?sign=".makeSign($json), //使用 http，https 有几率造成证书错误之类的
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => $json,
-            CURLOPT_HTTPHEADER => array(
-                'sec-ch-ua: " Not;A Brand";v="99", "Google Chrome";v="91", "Chromium";v="91"',
-                'sec-ch-ua-mobile: ?0',
-                'User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36',
-                'Content-Type: application/x-www-form-urlencoded',
-                'Referer: https://y.qq.com/'
-            ),
-        ));
-
-        $response = curl_exec($curl);
+        $response = Requests::post("http://u.y.qq.com/cgi-bin/musics.fcg?sign=".makeSign($json), 
+        array(
+            'sec-ch-ua' => '" Not;A Brand";v="99", "Google Chrome";v="91", "Chromium";v="91"',
+            'sec-ch-ua-mobile' => '?0',
+            'User-Agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36',
+            'Content-Type' => 'application/x-www-form-urlencoded',
+            'Referer' => 'https://y.qq.com/'
+        ), $json);
+        $response = $response->body;
 
         //输出 raw
         if(_has("raw"))
             exit($response);
 
-        curl_close($curl);
         $ret = json_decode($response);
 
         //错误检查
