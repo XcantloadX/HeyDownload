@@ -3,6 +3,16 @@ require_once 'vendor/autoload.php';
 require_once "lib/util.php";
 require_once "parser/base.php";
 
+//https://www.php.net/manual/en/reserved.variables.argv.php#113614
+//将命令行参数复制到 $_GET 里
+foreach ($argv as $arg) {
+    $e=explode("=",$arg);
+    if(count($e)==2)
+        $_GET[$e[0]]=$e[1];
+    else   
+        $_GET[$e[0]]=0;
+}
+
 //是否直接重定向到目标地址
 $redirect = _has("redirect");
 $url = _get("url");

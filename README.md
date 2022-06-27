@@ -2,8 +2,6 @@
 PHP 音视频解析  
 **有待重写**  
 解析脚本在 `parser ` 下面  
-[Demo](http://qwq123.top/demo/heydownload/)  
-（PS：Demo 部署在国外服务器上，QQ 音乐无法使用）
 
 ## 已支持站点
 * 优酷
@@ -21,7 +19,7 @@ PHP 音视频解析
 
 string `url`：待解析 URL  
 bool `redirect`：是否直接重定向到目标地址（可以直接放在 video/audio 标签的 src 中）（前提是对方没有设置 Referer 限制）。  
-array `actions`：动作，包括：`default`、`getUrl`、`getCoverUrl`、`getLyric`等，可以叠加多个，使用英文逗号分割，不区分大小写。可省略，默认为 `default`。    
+array `actions`：动作，包括：`default`、`getUrl`、`getCoverUrl`、`getLyric`等，可以叠加多个，使用英文逗号分割，**区分大小写**。可省略，默认为 `default`。    
 ### 返回
 例如：`/get.php?url=https://y.qq.com/n/ryqq/songDetail/004Jb2Ra312pz3`
 ```json
@@ -29,26 +27,37 @@ array `actions`：动作，包括：`default`、`getUrl`、`getCoverUrl`、`getL
     "code": 0,
     "msg": "success",
     "data": {
-        "type": "audio",
         "urls": [
             {
                 "quality": "unknown",
-                "url": "..."
+                "url": "http://ws.stream.qqmusic.qq.com/C400003oglTe4Zwe7o.m4a?guid=5932328698&vkey=F0BE6D912306C28F73F53D80C562E8936A1B147F9622626686C3D306F13CDEC6A6973419166C7B6E96467E660644CD1A5807A2BA58000910419166C7B6E96467E660644CD1A5807A2BA58000910&uin=&fromtag=120032"
             },
             {
                 "quality": "unknown",
-                "url": "..."
+                "url": "http://isure.stream.qqmusic.qq.com/C400003oglTe4Zwe7o.m4a?guid=5932328698&vkey=F0BE6D912306C28F73F53D80C562E8936A1B147F96E660644CD1A5807A2BA58000910&uin=&fromtag=1222626686C3D306F13CDEC6A6973419166C7B6E96467E660644CD1A5807A2BA58000910&uin=&fromtag=120032"
             }
         ],
+        "cover": "https://y.qq.com/music/photo_new/T002R300x300M000002ZktSL4BNi8X.jpg?max_age=2592000",
         "title": "夏日未命名",
         "author": "小魂",
-        "cover": "https://www.example.com/image.png"
+        "type": "audio"
     }
 }
 ```
 `type`：类型，目前只有 `audio`，`video`  
 `urls`：所有的解析结果，可能包含不同的画质/音质  
 `cover`：封面 URL，若无/不支持则返回空字符串  
+
+## 命令行调用
+**Windows 下需要先运行 `chcp 65001` 切换到 UTF-8 编码以避免输出乱码**  
+调用方法：  
+```
+php ./get.php arg1 arg2 ...
+```  
+如  
+```
+php ./get.php url=https://y.qq.com/n/ryqq/songDetail/004Jb2Ra312pz3
+```
 
 ## 参考项目/文章
 * [QQ音乐API分析之-加密参数分析(sign计算)](https://blog.csdn.net/qq_23594799/article/details/111477320)

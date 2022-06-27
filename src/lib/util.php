@@ -44,20 +44,6 @@ function succeed(array $obj){
     echo json_encode($obj);
 }
 
-function makeResponse(int $code, string $msg, string $type, array $urlList, array $infoList){
-    $data = array(
-            "type" => $type,
-            "urls" => $urlList,
-    );
-    $data = array_merge($data, $infoList);
-    
-    return array(
-        "code" => $code,
-        "msg" => $msg,
-        "data" => $data
-    );
-}
-
 /** $_GET[] 的封装
  * @param string $name URL 参数名称
  * @return mixed|null 值
