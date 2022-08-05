@@ -1,6 +1,6 @@
 <?php
 //TODO 支持 QQ 音乐另一种 URL https://y.qq.com/n/yqq/song/004Of2MN0iIjD2.html
-class QQMusic extends ParserBase {
+class QQMusic extends SingleBase {
     public function __construct(string $url){
         $this->id = substr(_get("url"), -14);
         $this->run();
@@ -94,17 +94,6 @@ DATA;
         );
     }
 
-    public function getInfo() : array
-    {
-        return array(
-            "type" => "audio",
-            "urls" => $this->urls,
-            "title" => $this->title,
-            "author" => $this->author,
-            "cover" => $this->cover
-        );
-    }
-
     public function getType() : string
     {
         return "audio";
@@ -112,14 +101,10 @@ DATA;
 
     /** 获取歌词
      */
-    public function getLyric() : array{
+    public function getLyric() : string{
         $ret = json_decode(Requests::get("https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg?_=1626762812506&cv=4747474&ct=24&format=json&inCharset=utf-8&outCharset=utf-8&notice=0&platform=yqq.json&needNewCode=1&songmid=$this->id",
             array("Referer" => "https://y.qq.com/"))->body);
-        return array("lyric" => base64_decode($ret->lyric));
-    }
-
-    public function getLyricUrl() : array{
-        return array("lyricUrl" => null);
+        return base64_decode($ret->lyric);
     }
 }
 

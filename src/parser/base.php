@@ -1,18 +1,19 @@
 <?php
-
-//所有解析器的基类
-abstract class ParserBase
+/**
+ * 单个音视频解析器基类
+ */
+abstract class SingleBase
 {
-    protected $id;
-    protected $cover;
-    protected $title;
-    protected $descr;
-    protected $author;
-    protected $timestamp;
+    protected string $id;
+    protected ?string $cover = null;
+    protected ?string $title = null;
+    protected ?string $descr = null;
+    protected ?string $author = null;
+    protected ?int $timestamp = null;
     protected $urls;
 
-    protected $code = 0;
-    protected $msg = "success";
+    protected int $code = 0;
+    protected string $msg = "success";
 
 	//获取相关信息
 	/*
@@ -23,7 +24,7 @@ abstract class ParserBase
 		"data": {
 			"title": "题目",
 			"description": "简介/描述".
-			"cover": "http://baidu.com",
+			"coverUrl": "http://baidu.com",
 			"author": "作者",
 			"timestamp": 发布/上传 时间戳,
 			"special":{
@@ -36,7 +37,10 @@ abstract class ParserBase
 	}
 	*/
 
-    public function getUrl() : string
+    /**
+     * 获取播放地址
+     */
+    public function getUrl() : ?string
     {
         return $this->urls[0];
     }
@@ -57,28 +61,54 @@ abstract class ParserBase
 
     public abstract function getType();
 
-    public function getCoverUrl() : array
+    /**获取封面地址 */
+    public function getCoverUrl() : ?string
     {
-        return array("cover" => $this->cover);
+        return $this->cover;
     }
 
-    public function getAuthor() : array
+    /**
+     * 获取作者
+     * @return string 若有多个作者将会以“A / B / C / ...”的形式返回
+     * */
+    public function getAuthor() : ?string
     {
-        return array("author" => $this->author);
+        return $this->author;
     }
 
-    public function getTitle() : array
+    /**获取标题 */
+    public function getTitle() : ?string
     {
-        return array("title" => $this->title);
+        return $this->title;
     }
 
-    public function getLyric() : array{
-	    return array("lyric" => null);
+    /**获取歌词 */
+    public function getLyric() : ?string{
+	    return null;
     }
 
-    public function getLyricUrl() : array{
-        return array("lyricUrl" => null);
+    /**是否有歌词 */
+    public function hasLryic() : bool{
+        return false;
     }
 
+    /**获取翻译歌词 */
+    public function hasTranslatedLyric() : bool{
+        return false;
+    }
+
+    /**是否有翻译歌词 */
+    public function getTranslatedLyric() : ?string{
+        return null;
+    }
+
+}
+
+/**
+ * 视频列表/歌单解析器基类
+ */
+abstract class ListBase
+{
+    protected string $id;
 
 }

@@ -1,5 +1,5 @@
 <?php
-class HaoKan extends ParserBase {
+class HaoKan extends SingleBase {
 	private $json;
 	private $watch;
 	private $like;
@@ -53,12 +53,12 @@ class HaoKan extends ParserBase {
         return $this->json->curVideoMeta->playurl;
     }
 
-	public function getLikeCount() : array{
-	    return array("likeCount" => $this->like);
+	public function getLikeCount() : int{
+	    return $this->like;
     }
 
-    public function getWatchCount() : array{
-        return array("watchCount" => $this->watch);
+    public function getWatchCount() : int{
+        return $this->watch;
     }
 
     public function getType(): string

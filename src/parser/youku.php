@@ -3,7 +3,7 @@ define("YK_APPKEY", "24679788");
 define("YK_URL", "https://acs.youku.com/h5/mtop.youku.play.ups.appinfo.get/1.1/?");
 define("YK_API", "mtop.youku.play.ups.appinfo.get");
 
-class YouKu extends ParserBase
+class YouKu extends SingleBase
 {
 	private $token;
 	private $time;

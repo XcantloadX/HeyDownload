@@ -46,16 +46,22 @@ $parsers = array(
 $data = array();
 //遍历配对
 foreach($parsers as $k=>$v){
-    if(strpos($url, $k) > 0){ //如果匹配成功
+    if(strpos($url, $k) > 0){
+        //匹配成功
         include("./parser/".strtolower($v).".php");
         $ins = new $v($url);
-        if($redirect){
+        if($redirect){ //直接重定向到播放地址
             header("Location: ".$ins->getUrl());
             exit;
-        }else{
+        }else{ //否则执行所有 action
             foreach ($actions as $action){
-                if($action != "")
-                    $data = array_merge($data, $ins->$action());
+                if($action != ""){
+                    $retval = $ins->$action(); //action 返回值
+                    $actionRetName = lcfirst(str_replace("get", "", $action)); //出现在 json 返回值里的名字
+                    $actionRetData = array($actionRetName => $retval);
+                    $data = array_merge($data, $actionRetData);
+                }
+                    
             }
         }
         $data["type"] = $ins->getType();

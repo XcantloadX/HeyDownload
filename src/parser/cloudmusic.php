@@ -1,7 +1,7 @@
 <?php
 require "./lib/simple_html_dom.php";
 
-class CloudMusic extends ParserBase{
+class CloudMusic extends SingleBase{
 
     public function __construct($url){
         $url = str_replace("/#/", "/", $url);
@@ -29,17 +29,6 @@ class CloudMusic extends ParserBase{
 		$this->descr = $json->description;
 		
 		$html->clear();
-	}
-
-	//获取相关信息
-	public function getInfo() : array{
-		return array(
-			"title" => $this->title,
-			"cover" => $this->cover,
-			"description" => $this->descr,
-			"author" => $this->author,
-			"timestamp" => $this->timestamp
-		);
 	}
 	
 	//返回视频链接
