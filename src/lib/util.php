@@ -63,6 +63,10 @@ function _has(string $name) : bool{
     return isset($_GET[$name]);
 }
 
+function isCommandline() : bool{
+    return PHP_SAPI == "cli";
+}
+
 /** 获取请求的 Action
  * @return false|string[] action Array
  */

@@ -5,12 +5,14 @@ require_once "parser/base.php";
 
 //https://www.php.net/manual/en/reserved.variables.argv.php#113614
 //将命令行参数复制到 $_GET 里
-foreach ($argv as $arg) {
-    $e=explode("=",$arg);
-    if(count($e)==2)
-        $_GET[$e[0]]=$e[1];
-    else   
-        $_GET[$e[0]]=0;
+if(isCommandline()){
+    foreach ($argv as $arg) {
+        $e = explode("=", $arg, 2);
+        if(count($e)==2)
+            $_GET[$e[0]]=$e[1];
+        else   
+            $_GET[$e[0]]=0;
+    }
 }
 
 //是否直接重定向到目标地址
@@ -67,7 +69,10 @@ foreach($parsers as $k=>$v){
         $data["type"] = $ins->getType();
         $response = array("code" => $ins->getCode(), "msg" => $ins->getMsg(), "data" => $data);
         header("Content-Type: application/json");
-        echo json_encode($response, JSON_UNESCAPED_UNICODE);
+        if(isCommandline())
+            echo json_encode($response, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT); //控制台使用格式化的 json 输出
+        else
+            echo json_encode($response, JSON_UNESCAPED_UNICODE); //web 使用压缩的 json 输出
     }
 }
 
